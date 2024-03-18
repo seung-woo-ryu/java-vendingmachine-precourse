@@ -6,22 +6,37 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 public class VendingMachine {
 
-    private EnumMap<Coin, Long> coinMap;
+    private EnumMap<Coin, Long> coinMap = new EnumMap<>(Coin.class);
 
-    public VendingMachine(int money) {
-        this.coinMap = generateCoins(money);
+    public VendingMachine() {
+        init();
     }
 
-    private EnumMap<Coin, Long> generateCoins(int money) {
+    private void init() {
+        coinMap.put(Coin.COIN_500, 0L);
+        coinMap.put(Coin.COIN_100, 0L);
+        coinMap.put(Coin.COIN_50, 0L);
+        coinMap.put(Coin.COIN_10, 0L);
+    }
+
+    public void generateCoins(int money) {
         // 유효성 검사하기
+        if (money % 10 != 0) {
+            throw new IllegalArgumentException("[ERROR] 잘못된 동전 금액입니다. 10원 단위로 입력해주세요!");
+        }
 
         while (money != 0) {
-            Randoms.pickNumberInList(Arrays.asList(500, 100, 50, 10));
+            int amount = Randoms.pickNumberInList(Coin.getCoinList());
+            if (amount <= money) {
+                Coin coin = Coin.getCoin(amount);
+                coinMap.compute(coin, (key, oldValue) -> oldValue + 1);
+                money -= amount;
+            }
         }
-        return null;
     }
 
     @Override
