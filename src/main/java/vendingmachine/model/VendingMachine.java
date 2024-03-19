@@ -1,15 +1,10 @@
-package vendingmachine;
+package vendingmachine.model;
 
 import camp.nextstep.edu.missionutils.Randoms;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class VendingMachine {
 

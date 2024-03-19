@@ -4,8 +4,8 @@ import camp.nextstep.edu.missionutils.Console;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map.Entry;
-import vendingmachine.Coin;
-import vendingmachine.Product;
+import vendingmachine.model.Coin;
+import vendingmachine.model.Product;
 
 public class View extends AbstractView{
     private String inputVendingMachineMoney = "자판기가 보유하고 있는 금액을 입력해 주세요.";

@@ -1,7 +1,7 @@
-package vendingmachine;
+package vendingmachine.controller;
 
-import java.util.EnumMap;
-import java.util.List;
+import vendingmachine.model.ProductContainer;
+import vendingmachine.model.VendingMachine;
 import vendingmachine.view.View;
 
 public class Controller {
