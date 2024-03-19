@@ -4,15 +4,13 @@ public class Product {
 
     private String name;
     private int price;
-    private int quantity;
 
-    public Product(String name, int price, int quantity) {
+    public Product(String name, int price) {
         // 유효성 검사
         checkMoney(price);
 
         this.name = name;
         this.price = price;
-        this.quantity = quantity;
     }
 
     private void checkMoney(int price) {
