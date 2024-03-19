@@ -15,6 +15,10 @@ public class VendingMachine {
 
     private EnumMap<Coin, Long> coinMap = new EnumMap<>(Coin.class);
 
+    public EnumMap<Coin, Long> getCoinMap() {
+        return coinMap;
+    }
+
     public VendingMachine() {
         init();
     }
