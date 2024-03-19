@@ -2,11 +2,14 @@ package vendingmachine;
 
 import camp.nextstep.edu.missionutils.Randoms;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class VendingMachine {
 
@@ -37,6 +40,22 @@ public class VendingMachine {
                 money -= amount;
             }
         }
+    }
+
+    public EnumMap<Coin, Long> returnCoins(int change) {
+        EnumMap<Coin, Long> changeCoins = new EnumMap<>(Coin.class);
+
+        for(Entry<Coin,Long> entry: coinMap.entrySet()){
+            int amount = entry.getKey().getAmount();
+            int quantity = entry.getValue().intValue();
+
+            Integer minQuantity = Collections.min(Arrays.asList(Math.floorDiv(change,amount), quantity));
+            changeCoins.put(entry.getKey(), minQuantity.longValue());
+
+            change -= amount * minQuantity;
+        }
+
+        return changeCoins;
     }
 
     @Override
