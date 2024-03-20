@@ -10,9 +10,11 @@ public abstract class AbstractView {
             try {
                 return supplier.get();
             } catch (IllegalArgumentException e) {
-                System.out.println(String.format(errorFormat,errorMessage));
+                printError(errorMessage);
             }
         }
     }
-
+    public void printError(String errorMessage) {
+        System.out.println(String.format(errorFormat,errorMessage));
+    }
 }
