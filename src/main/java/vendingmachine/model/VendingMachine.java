@@ -1,71 +1,32 @@
 package vendingmachine.model;
 
-import camp.nextstep.edu.missionutils.Randoms;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumMap;
-import java.util.Map.Entry;
 
 public class VendingMachine {
+    private ProductContainer productContainer;
+    private CoinContainer coinContainer = new CoinContainer();;
 
-    private EnumMap<Coin, Long> coinMap = new EnumMap<>(Coin.class);
-
-    public EnumMap<Coin, Long> getCoinMap() {
-        return coinMap;
-    }
-
-    public VendingMachine() {
-        init();
-    }
-
-    private void init() {
-        coinMap.put(Coin.COIN_500, 0L);
-        coinMap.put(Coin.COIN_100, 0L);
-        coinMap.put(Coin.COIN_50, 0L);
-        coinMap.put(Coin.COIN_10, 0L);
+    public void setProductContainer(String[] products) {
+        this.productContainer = ProductContainer.of(products);
     }
 
     public void generateCoins(int money) {
-        // 유효성 검사하기
-        if (money % 10 != 0) {
-            throw new IllegalArgumentException("[ERROR] 잘못된 동전 금액입니다. 10원 단위로 입력해주세요!");
-        }
-
-        while (money != 0) {
-            int amount = Randoms.pickNumberInList(Coin.getCoinList());
-            if (amount <= money) {
-                Coin coin = Coin.getCoin(amount);
-                coinMap.compute(coin, (key, oldValue) -> oldValue + 1);
-                money -= amount;
-            }
-        }
+        this.coinContainer.init(money);
+    }
+    public EnumMap<Coin, Long> getCoin2quantity() {
+        return coinContainer.getCoin2quantity();
     }
 
     public EnumMap<Coin, Long> returnCoins(int change) {
-        EnumMap<Coin, Long> changeCoins = new EnumMap<>(Coin.class);
-
-        for(Entry<Coin,Long> entry: coinMap.entrySet()){
-            int amount = entry.getKey().getAmount();
-            int quantity = entry.getValue().intValue();
-
-            Integer minQuantity = Collections.min(Arrays.asList(Math.floorDiv(change,amount), quantity));
-            changeCoins.put(entry.getKey(), minQuantity.longValue());
-
-            change -= amount * minQuantity;
-        }
-
-        return changeCoins;
+        return this.coinContainer.returnCoins(change);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (Entry<Coin, Long> entry : coinMap.entrySet()) {
-            String tmp = String.format("%s원 - %s개\n", entry.getKey().getAmount(), entry.getValue());
-            sb.append(tmp);
-        }
-        sb.append("\n");
+    public boolean isAvailableForPurchase(int inputDeposit) {
+        // 남은 금액이 상품의 최저 가격보다 적거나, 모든 상품이 소진된 경우, 바로 종료
+        return !(productContainer.isOutOfMoney(inputDeposit) || productContainer.isOutOfProduct());
+    }
 
-        return sb.toString();
+    public int buyProduct(String productName, int clientMoney) {
+        return productContainer.buyProduct(productName, clientMoney);
     }
 }
